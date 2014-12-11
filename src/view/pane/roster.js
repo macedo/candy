@@ -48,6 +48,8 @@ Candy.View.Pane = (function(self, $) {
         userId = Candy.Util.jidToId(user.getJid()),
         usercountDiff = -1,
         userElem = $('#user-' + roomId + '-' + userId),
+        roster = Candy.Core.getRoster(),
+        bareJid = Strophe.getBareJidFromJid(user.getRealJid()),
         evtData = {
           'roomJid' : roomJid,
           'user' : user,
@@ -67,10 +69,14 @@ Candy.View.Pane = (function(self, $) {
       $(Candy).triggerHandler('candy:view.roster.before-update', evtData);
 
       // a user joined the room
+      
       if(action === 'join') {
+        var status;
+        status = (roster.get(bareJid)) ? roster.get(bareJid).getStatus() : 'unavailable';
         usercountDiff = 1;
         var html = Mustache.to_html(Candy.View.Template.Roster.user, {
             roomId: roomId,
+            status: status,
             userId : userId,
             userJid: user.getJid(),
             realJid: user.getRealJid(),
