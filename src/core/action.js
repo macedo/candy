@@ -140,14 +140,6 @@ Candy.Core.Action = (function(self, Strophe, $) {
 				.c('storage', {xmlns: Strophe.NS.BOOKMARKS})
 				.tree());
       
-        Candy.Core.getConnection().sendIQ($iq({
-					type: 'get',
-					xmlns: Strophe.NS.CLIENT
-				})
-				.c('query', {xmlns: Strophe.NS.PRIVATE})
-				.c('storage', {xmlns: Strophe.NS.BOOKMARK_USER})
-				.tree());
-
 
 				var pubsubBookmarkRequest = Candy.Core.getConnection().getUniqueId('pubsub');
 				Candy.Core.addHandler(Candy.Core.Event.Jabber.Bookmarks, Strophe.NS.PUBSUB, 'iq', 'result');
@@ -159,6 +151,15 @@ Candy.Core.Action = (function(self, Strophe, $) {
 				.c('pubsub', { xmlns: Strophe.NS.PUBSUB })
 				.c('items', { node: Strophe.NS.BOOKMARKS })
 				.tree());
+
+        Candy.Core.getConnection().sendIQ($iq({
+					type: 'get',
+					id: pubsubBookmarkRequest
+				})
+				.c('pubsub', { xmlns: Strophe.NS.PUBSUB })
+				.c('items', { node: Strophe.NS.BOOKMARK_USER })
+				.tree());
+
 			// Join defined rooms
 			} else if($.isArray(Candy.Core.getOptions().autojoin)) {
 				$.each(Candy.Core.getOptions().autojoin, function() {

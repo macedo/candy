@@ -287,13 +287,20 @@ Candy.Core.Event = (function(self, Strophe, $) {
 		Bookmarks: function(msg) {
 			Candy.Core.log('[Jabber] Bookmarks');
 			// Autojoin bookmarks
-      console.log(msg);
 			$('conference', msg).each(function() {
 				var item = $(this);
 				if(item.attr('autojoin')) {
 					Candy.Core.Action.Jabber.Room.Join(item.attr('jid'));
 				}
 			});
+
+      $('person', msg).each(function() {
+        var person = $(this)
+          , jid = person.attr('jid')
+          , nick = jid.split('@')[0];
+
+        Candy.View.Pane.PrivateRoom.open(jid, nick, true, true);
+      });
 			return true;
 		},
 
