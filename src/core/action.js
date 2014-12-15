@@ -139,9 +139,18 @@ Candy.Core.Action = (function(self, Strophe, $) {
 				.c('query', {xmlns: Strophe.NS.PRIVATE})
 				.c('storage', {xmlns: Strophe.NS.BOOKMARKS})
 				.tree());
+      
+        Candy.Core.getConnection().sendIQ($iq({
+					type: 'get',
+					xmlns: Strophe.NS.CLIENT
+				})
+				.c('query', {xmlns: Strophe.NS.PRIVATE})
+				.c('storage', {xmlns: Strophe.NS.BOOKMARK_USER})
+				.tree());
+
 
 				var pubsubBookmarkRequest = Candy.Core.getConnection().getUniqueId('pubsub');
-				Candy.Core.addHandler(Candy.Core.Event.Jabber.Bookmarks, Strophe.NS.PUBSUB, 'iq', 'result', pubsubBookmarkRequest);
+				Candy.Core.addHandler(Candy.Core.Event.Jabber.Bookmarks, Strophe.NS.PUBSUB, 'iq', 'result');
 
 				Candy.Core.getConnection().sendIQ($iq({
 					type: 'get',

@@ -287,6 +287,7 @@ Candy.Core.Event = (function(self, Strophe, $) {
 		Bookmarks: function(msg) {
 			Candy.Core.log('[Jabber] Bookmarks');
 			// Autojoin bookmarks
+      console.log(msg);
 			$('conference', msg).each(function() {
 				var item = $(this);
 				if(item.attr('autojoin')) {
